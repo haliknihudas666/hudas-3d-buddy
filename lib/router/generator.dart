@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../screens/home/home.dart';
+import '../screens/screens.dart';
 
 final appRouter = Provider<GoRouter>((ref) {
   return GoRouter(
@@ -14,11 +14,25 @@ final appRouter = Provider<GoRouter>((ref) {
           child: const HomePage(),
         ),
       ),
+      GoRoute(
+        path: CustomRouter.kPrinterRoute,
+        pageBuilder: (context, state) => MaterialPage<void>(
+          key: state.pageKey,
+          child: const FilamentManagementPage(),
+        ),
+      ),
+      GoRoute(
+        path: CustomRouter.kFilamentRoute,
+        pageBuilder: (context, state) => MaterialPage<void>(
+          key: state.pageKey,
+          child: const FilamentManagementPage(),
+        ),
+      ),
     ],
-    initialLocation: CustomRouter.kOnboardingRoute,
+    initialLocation: CustomRouter.kHomeRoute,
     errorPageBuilder: (context, state) =>
         MaterialPage<void>(key: state.pageKey, child: _ErrorPage(state.error)),
-    redirect: (state) {
+    redirect: (context, state) {
       // final auth = ref.read(authProvider);
       // final introStatus = auth.userIntro;
       // final token = auth.token;
@@ -34,7 +48,6 @@ final appRouter = Provider<GoRouter>((ref) {
 
       return null;
     },
-    urlPathStrategy: UrlPathStrategy.path,
   );
 });
 
@@ -42,23 +55,23 @@ class CustomRouter {
   /// /onboarding route
   static const String kOnboardingRoute = '/onboarding';
 
-  /// /login route
-  static const String kAuthLandingRoute = '/authlanding';
-
-  /// /login route
-  static const String kLoginRoute = '/login';
-
-  /// /register route
-  static const String kRegisterRoute = '/register';
-
-  /// /verify route
-  static const String kOTPRoute = '/verify';
-
-  /// / route
+  /// / home route
   static const String kHomeRoute = '/';
 
-  /// /profile route
-  static const String kProfileRoute = '/profile';
+  /// /printer route
+  static const String kPrinterRoute = '/printer';
+
+  /// /filament route
+  static const String kFilamentRoute = '/filament';
+
+  /// /history
+  static const String kHistoryRoute = '/history';
+
+  /// /calusettings
+  static const String kCalcuSettingsRoute = '/calcusettings';
+
+  /// /settings
+  static const String kSettingsRoute = '/settings';
 }
 
 class _ErrorPage extends StatelessWidget {
