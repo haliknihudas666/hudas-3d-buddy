@@ -30,12 +30,14 @@ class _HomePageState extends ConsumerState<HomePage> {
         children: [
           ListTile(
             leading: const Icon(Icons.print),
-            trailing: IconButton(
-              icon: const Icon(Icons.clear),
-              onPressed: () {
-                printersProvider.setSelectedPrinter(null);
-              },
-            ),
+            trailing: printersProvider.selectedPrinter != null
+                ? IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: () {
+                      printersProvider.setSelectedPrinter(null);
+                    },
+                  )
+                : null,
             title: DropdownButtonHideUnderline(
               child: DropdownButton<PrinterModel?>(
                 value: printersProvider.selectedPrinter,
@@ -43,11 +45,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                 icon: const Icon(Icons.arrow_drop_down_rounded),
                 iconSize: 24,
                 elevation: 16,
-                style: const TextStyle(color: Colors.deepPurple),
-                underline: Container(
-                  height: 2,
-                  color: Colors.deepPurpleAccent,
-                ),
+                style: TextStyle(color: Theme.of(context).primaryColor),
+                // underline: Container(
+                //   height: 2,
+                //   color: Colors.deepPurpleAccent,
+                // ),
                 onChanged: (newValue) {
                   printersProvider.setSelectedPrinter(newValue);
                 },
@@ -55,7 +57,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                     .map<DropdownMenuItem<PrinterModel?>>((value) {
                   return DropdownMenuItem<PrinterModel>(
                     value: value,
-                    child: Text(value.name ?? ''),
+                    child: Text(
+                      value.name ?? '',
+                      style: const TextStyle(color: Colors.black),
+                    ),
                   );
                 }).toList(),
               ),
@@ -63,12 +68,14 @@ class _HomePageState extends ConsumerState<HomePage> {
           ),
           ListTile(
             leading: const Icon(Icons.build_circle),
-            trailing: IconButton(
-              icon: const Icon(Icons.clear),
-              onPressed: () {
-                filamentsProvider.setSelectedFilament(null);
-              },
-            ),
+            trailing: filamentsProvider.selectedFilament != null
+                ? IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: () {
+                      filamentsProvider.setSelectedFilament(null);
+                    },
+                  )
+                : null,
             title: DropdownButtonHideUnderline(
               child: DropdownButton<FilamentModel?>(
                 value: filamentsProvider.selectedFilament,
@@ -76,11 +83,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                 icon: const Icon(Icons.arrow_drop_down_rounded),
                 iconSize: 24,
                 elevation: 16,
-                style: const TextStyle(color: Colors.deepPurple),
-                underline: Container(
-                  height: 2,
-                  color: Colors.deepPurpleAccent,
-                ),
+                style: TextStyle(color: Theme.of(context).primaryColor),
+                // underline: Container(
+                //   height: 2,
+                //   color: Colors.deepPurpleAccent,
+                // ),
                 onChanged: (newValue) {
                   filamentsProvider.setSelectedFilament(newValue);
                 },
@@ -88,7 +95,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                     .map<DropdownMenuItem<FilamentModel?>>((value) {
                   return DropdownMenuItem<FilamentModel>(
                     value: value,
-                    child: Text(value.name ?? ''),
+                    child: Text(
+                      value.name ?? '',
+                      style: const TextStyle(color: Colors.black),
+                    ),
                   );
                 }).toList(),
               ),
