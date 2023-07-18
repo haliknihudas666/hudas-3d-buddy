@@ -70,7 +70,7 @@ class Sidebar extends StatelessWidget {
     if (location == path) {
       context.pop();
     } else {
-      context.push(path);
+      context.replace(path);
     }
   }
 }
