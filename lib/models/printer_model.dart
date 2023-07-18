@@ -1,3 +1,16 @@
+class SavedPrinterData {
+  List<PrinterModel>? printers;
+
+  SavedPrinterData.fromJson(List? data) {
+    if (data != null) {
+      printers = <PrinterModel>[];
+      for (var v in data) {
+        printers!.add(PrinterModel.fromJson(v));
+      }
+    }
+  }
+}
+
 class PrinterModel {
   String? name;
   String? brand;
