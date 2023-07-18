@@ -18,7 +18,7 @@ final appRouter = Provider<GoRouter>((ref) {
         path: CustomRouter.kPrinterRoute,
         pageBuilder: (context, state) => MaterialPage<void>(
           key: state.pageKey,
-          child: const FilamentManagementPage(),
+          child: const PrinterManagementPage(),
         ),
       ),
       GoRoute(
