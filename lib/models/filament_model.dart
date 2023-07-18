@@ -1,8 +1,20 @@
+class SavedFilamentData {
+  List<FilamentModel>? filaments;
+
+  SavedFilamentData.fromJson(List? data) {
+    if (data != null) {
+      filaments = <FilamentModel>[];
+      for (var v in data) {
+        filaments!.add(FilamentModel.fromJson(v));
+      }
+    }
+  }
+}
+
 class FilamentModel {
   String? name;
   String? brand;
   String? material;
-  String? color;
   double? diameter;
   double? price;
   double? weight;
@@ -13,7 +25,6 @@ class FilamentModel {
     this.name,
     this.brand,
     this.material,
-    this.color,
     this.diameter,
     this.price,
     this.weight,
@@ -26,7 +37,6 @@ class FilamentModel {
       name: json['name'],
       brand: json['brand'],
       material: json['material'],
-      color: json['color'],
       diameter: json['diameter'],
       price: json['price'],
       weight: json['weight'],
@@ -39,7 +49,6 @@ class FilamentModel {
         'name': name,
         'brand': brand,
         'material': material,
-        'color': color,
         'diameter': diameter,
         'price': price,
         'weight': weight,
