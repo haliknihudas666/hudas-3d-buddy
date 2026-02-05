@@ -54,6 +54,7 @@ class _CalculatorScreenState extends ConsumerState<CalculatorScreen>
             expandedHeight: 120,
             floating: true,
             pinned: true,
+            centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
                 '3D Print Calculator',
@@ -61,7 +62,11 @@ class _CalculatorScreenState extends ConsumerState<CalculatorScreen>
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              titlePadding: const EdgeInsets.only(left: 56, bottom: 16),
+              centerTitle: true,
+              // Adjusted padding to be somewhat standard or removed if centering handles it.
+              // Standard FlexibleSpaceBar with centerTitle handles padding well usually.
+              // We'll keep a small bottom padding.
+              titlePadding: const EdgeInsets.only(bottom: 16),
             ),
             actions: [
               IconButton(
@@ -110,17 +115,16 @@ class _CalculatorScreenState extends ConsumerState<CalculatorScreen>
                 ),
                 const SizedBox(height: 16),
 
-                // Tab content
-                SizedBox(
-                  height: 400,
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: const [
-                      PrintParamsCard(),
-                      PreProcessingOptionsCard(),
-                      PostProcessingOptionsCard(),
-                    ],
-                  ),
+                // Tab content (Dynamic Height)
+                AnimatedBuilder(
+                  animation: _tabController,
+                  builder: (context, child) {
+                    return [
+                      const PrintParamsCard(),
+                      const PreProcessingOptionsCard(),
+                      const PostProcessingOptionsCard(),
+                    ][_tabController.index];
+                  },
                 ),
                 const SizedBox(height: 20),
 

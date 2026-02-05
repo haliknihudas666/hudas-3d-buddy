@@ -106,8 +106,8 @@ class CostBreakdownCard extends ConsumerWidget {
                   ),
                   _buildMiniStat(
                     context,
-                    'Profit Margin',
-                    '${job.profitMargin.toStringAsFixed(1)}%',
+                    'Markup',
+                    '${job.markupPercentage.toStringAsFixed(1)}%',
                   ),
                   _buildMiniStat(
                     context,
@@ -146,13 +146,16 @@ class CostBreakdownCard extends ConsumerWidget {
 
               // Material Costs
               _buildSection(context, 'Material Costs', [
-                _buildCostRow(context, 'Filament', job.filamentCost, currencyFormat),
+                _buildCostRow(
+                    context, 'Filament', job.filamentCost, currencyFormat),
               ]),
 
               // Operation Costs
               _buildSection(context, 'Operation Costs', [
-                _buildCostRow(context, 'Electricity', job.electricityCost, currencyFormat),
-                _buildCostRow(context, 'Printer (depreciation)', job.printerCost, currencyFormat),
+                _buildCostRow(context, 'Electricity', job.electricityCost,
+                    currencyFormat),
+                _buildCostRow(context, 'Printer (depreciation)',
+                    job.printerCost, currencyFormat),
                 _buildCostRow(context, 'Labor', job.laborCost, currencyFormat),
               ]),
 
@@ -160,24 +163,30 @@ class CostBreakdownCard extends ConsumerWidget {
               if (job.preProcessingCost > 0 || job.postProcessingCost > 0)
                 _buildSection(context, 'Processing Costs', [
                   if (job.preProcessingCost > 0)
-                    _buildCostRow(context, 'Pre-Processing', job.preProcessingCost, currencyFormat),
+                    _buildCostRow(context, 'Pre-Processing',
+                        job.preProcessingCost, currencyFormat),
                   if (job.postProcessingCost > 0)
-                    _buildCostRow(context, 'Post-Processing', job.postProcessingCost, currencyFormat),
+                    _buildCostRow(context, 'Post-Processing',
+                        job.postProcessingCost, currencyFormat),
                 ]),
 
               const Divider(),
-              _buildCostRow(context, 'Subtotal', job.subtotal, currencyFormat, isBold: true),
+              _buildCostRow(context, 'Subtotal', job.subtotal, currencyFormat,
+                  isBold: true),
 
               // Adjustments
               _buildSection(context, 'Adjustments', [
-                _buildCostRow(context, 'Failure Buffer', job.failureBuffer, currencyFormat),
+                _buildCostRow(context, 'Failure Buffer', job.failureBuffer,
+                    currencyFormat),
                 _buildCostRow(context, 'Markup', job.markup, currencyFormat),
                 if (job.packagingCost > 0)
-                  _buildCostRow(context, 'Packaging', job.packagingCost, currencyFormat),
+                  _buildCostRow(
+                      context, 'Packaging', job.packagingCost, currencyFormat),
                 if (job.tax > 0)
                   _buildCostRow(context, 'Tax', job.tax, currencyFormat),
                 if (job.shippingCost > 0)
-                  _buildCostRow(context, 'Shipping', job.shippingCost, currencyFormat),
+                  _buildCostRow(
+                      context, 'Shipping', job.shippingCost, currencyFormat),
               ]),
 
               const Divider(thickness: 2),

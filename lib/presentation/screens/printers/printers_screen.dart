@@ -26,6 +26,7 @@ class PrintersScreen extends ConsumerWidget {
             expandedHeight: 120,
             floating: true,
             pinned: true,
+            centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
                 'Printers',
@@ -33,7 +34,8 @@ class PrintersScreen extends ConsumerWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              titlePadding: const EdgeInsets.only(left: 56, bottom: 16),
+              centerTitle: true,
+              titlePadding: const EdgeInsets.only(bottom: 16),
             ),
             actions: [
               IconButton(
@@ -532,7 +534,9 @@ class PrintersScreen extends ConsumerWidget {
           ),
           FilledButton(
             onPressed: () {
-              ref.read(printerNotifierProvider.notifier).deletePrinter(printer.id);
+              ref
+                  .read(printerNotifierProvider.notifier)
+                  .deletePrinter(printer.id);
               Navigator.pop(context);
             },
             style: FilledButton.styleFrom(

@@ -27,6 +27,7 @@ class FilamentsScreen extends ConsumerWidget {
             expandedHeight: 120,
             floating: true,
             pinned: true,
+            centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
                 'Filaments',
@@ -34,7 +35,8 @@ class FilamentsScreen extends ConsumerWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              titlePadding: const EdgeInsets.only(left: 56, bottom: 16),
+              centerTitle: true,
+              titlePadding: const EdgeInsets.only(bottom: 16),
             ),
             actions: [
               IconButton(
@@ -425,10 +427,10 @@ class FilamentsScreen extends ConsumerWidget {
                                     setState(() {
                                       selectedMaterial = v ?? 'PLA';
                                       // Auto-fill density
-                                      densityController.text =
-                                          FilamentMaterials.densities[v]
-                                                  ?.toString() ??
-                                              '1.24';
+                                      densityController.text = FilamentMaterials
+                                              .densities[v]
+                                              ?.toString() ??
+                                          '1.24';
                                     });
                                   },
                                 ),
@@ -555,9 +557,9 @@ class FilamentsScreen extends ConsumerWidget {
                                 name: nameController.text,
                                 brand: brandController.text,
                                 material: selectedMaterial,
-                                diameter: double.tryParse(
-                                        diameterController.text) ??
-                                    1.75,
+                                diameter:
+                                    double.tryParse(diameterController.text) ??
+                                        1.75,
                                 pricePerSpool:
                                     double.tryParse(priceController.text) ?? 0,
                                 weightPerSpool:
@@ -634,7 +636,9 @@ class FilamentsScreen extends ConsumerWidget {
           ),
           FilledButton(
             onPressed: () {
-              ref.read(filamentNotifierProvider.notifier).deleteFilament(filament.id);
+              ref
+                  .read(filamentNotifierProvider.notifier)
+                  .deleteFilament(filament.id);
               Navigator.pop(context);
             },
             style: FilledButton.styleFrom(

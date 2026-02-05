@@ -22,6 +22,7 @@ class PreProcessingScreen extends ConsumerWidget {
             expandedHeight: 120,
             floating: true,
             pinned: true,
+            centerTitle: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
                 'Pre-Processing',
@@ -29,7 +30,8 @@ class PreProcessingScreen extends ConsumerWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              titlePadding: const EdgeInsets.only(left: 56, bottom: 16),
+              centerTitle: true,
+              titlePadding: const EdgeInsets.only(bottom: 16),
             ),
           ),
           settingsAsync.when(

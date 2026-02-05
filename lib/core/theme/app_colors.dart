@@ -43,9 +43,10 @@ class AppColors {
   static const Color lightOutline = Color(0xFFDEE2E6);
 
   // Dark Theme Surface Colors
-  static const Color darkBackground = Color(0xFF0D1117);
-  static const Color darkSurface = Color(0xFF161B22);
-  static const Color darkSurfaceVariant = Color(0xFF21262D);
+  static const Color darkBackground = Color(0xFF37353E);
+  static const Color darkSurface =
+      Color(0xFF2C2A33); // Slightly darker for contrast
+  static const Color darkSurfaceVariant = Color(0xFF45424D); // Slightly lighter
   static const Color darkOnBackground = Color(0xFFE6EDF3);
   static const Color darkOnSurface = Color(0xFFE6EDF3);
   static const Color darkOnSurfaceVariant = Color(0xFF8B949E);

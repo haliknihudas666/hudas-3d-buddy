@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/legacy.dart';
 
 import '../../domain/entities/general_settings_entity.dart';
 import '../../domain/entities/pre_processing_entity.dart';
@@ -42,11 +41,13 @@ class GeneralSettingsNotifier extends AsyncNotifier<GeneralSettingsEntity> {
     final current = await future;
     final updated = current.copyWith(
       currency: currency ?? current.currency,
-      electricityRatePerKwh: electricityRatePerKwh ?? current.electricityRatePerKwh,
+      electricityRatePerKwh:
+          electricityRatePerKwh ?? current.electricityRatePerKwh,
       laborRatePerHour: laborRatePerHour ?? current.laborRatePerHour,
       failureRatePercent: failureRatePercent ?? current.failureRatePercent,
       markupPercent: markupPercent ?? current.markupPercent,
-      packagingCostPerItem: packagingCostPerItem ?? current.packagingCostPerItem,
+      packagingCostPerItem:
+          packagingCostPerItem ?? current.packagingCostPerItem,
       shippingBasePrice: shippingBasePrice ?? current.shippingBasePrice,
       includeTax: includeTax ?? current.includeTax,
       taxPercent: taxPercent ?? current.taxPercent,
@@ -92,7 +93,8 @@ final preProcessingSettingsProvider =
 // ==================== Post-Processing Settings ====================
 
 /// State notifier for managing post-processing settings
-class PostProcessingSettingsNotifier extends AsyncNotifier<PostProcessingEntity> {
+class PostProcessingSettingsNotifier
+    extends AsyncNotifier<PostProcessingEntity> {
   @override
   Future<PostProcessingEntity> build() async {
     return _loadSettings();
@@ -119,5 +121,16 @@ final postProcessingSettingsProvider =
 
 // ==================== Theme Settings ====================
 
+/// Notifier for theme mode
+class IsDarkModeNotifier extends Notifier<bool> {
+  @override
+  bool build() => true;
+
+  void toggle() {
+    state = !state;
+  }
+}
+
 /// Provider for theme mode (dark/light)
-final isDarkModeProvider = StateProvider<bool>((ref) => false);
+final isDarkModeProvider =
+    NotifierProvider<IsDarkModeNotifier, bool>(IsDarkModeNotifier.new);

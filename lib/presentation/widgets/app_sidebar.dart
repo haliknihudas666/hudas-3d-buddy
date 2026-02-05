@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_colors.dart';
+import '../providers/settings_provider.dart';
 import '../router/app_router.dart';
 
 /// Modern glassmorphic sidebar with navigation
-class AppSidebar extends StatelessWidget {
+class AppSidebar extends ConsumerWidget {
   const AppSidebar({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final currentRoute = GoRouterState.of(context).uri.path;
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final isDarkMode = ref.watch(isDarkModeProvider);
 
     return Drawer(
       backgroundColor: Colors.transparent,
@@ -35,7 +38,8 @@ class AppSidebar extends StatelessWidget {
                     AppColors.lightSurfaceVariant.withOpacity(0.90),
                   ],
                 ),
-          borderRadius: const BorderRadius.horizontal(right: Radius.circular(24)),
+          borderRadius:
+              const BorderRadius.horizontal(right: Radius.circular(24)),
         ),
         child: SafeArea(
           child: Column(
@@ -81,7 +85,8 @@ class AppSidebar extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
                       child: Text(
                         'SETTINGS',
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -111,6 +116,19 @@ class AppSidebar extends StatelessWidget {
                       route: AppRoutes.postProcessing,
                       isSelected: currentRoute == AppRoutes.postProcessing,
                     ),
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                      child: Text(
+                        'APPEARANCE',
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                              letterSpacing: 1.2,
+                            ),
+                      ),
+                    ),
+                    _buildThemeSwitch(context, ref, isDarkMode),
                   ],
                 ),
               ),
@@ -155,6 +173,58 @@ class AppSidebar extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildThemeSwitch(
+      BuildContext context, WidgetRef ref, bool isDarkMode) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(12),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () {
+            ref.read(isDarkModeProvider.notifier).toggle();
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Row(
+              children: [
+                Icon(
+                  isDarkMode
+                      ? Icons.dark_mode_rounded
+                      : Icons.light_mode_rounded,
+                  size: 22,
+                  color: isDark ? AppColors.primaryDark : AppColors.primary,
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Text(
+                    isDarkMode ? 'Dark Mode' : 'Light Mode',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: theme.colorScheme.onSurface,
+                    ),
+                  ),
+                ),
+                Switch(
+                  value: isDarkMode,
+                  onChanged: (value) {
+                    ref.read(isDarkModeProvider.notifier).toggle();
+                  },
+                  activeColor:
+                      isDark ? AppColors.primaryDark : AppColors.primary,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -249,8 +319,9 @@ class AppSidebar extends StatelessWidget {
                   : null,
               border: isSelected
                   ? Border.all(
-                      color: (isDark ? AppColors.primaryDark : AppColors.primary)
-                          .withOpacity(0.3),
+                      color:
+                          (isDark ? AppColors.primaryDark : AppColors.primary)
+                              .withOpacity(0.3),
                     )
                   : null,
             ),

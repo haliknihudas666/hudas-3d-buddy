@@ -5,16 +5,9 @@ import 'package:uuid/uuid.dart';
 import '../../domain/entities/print_job_entity.dart';
 import '../../domain/entities/filament_entity.dart';
 import '../../domain/entities/printer_entity.dart';
-import '../../domain/entities/general_settings_entity.dart';
-import '../../domain/entities/pre_processing_entity.dart';
-import '../../domain/entities/post_processing_entity.dart';
 import 'settings_provider.dart';
-import 'filament_provider.dart';
-import 'printer_provider.dart';
-import 'di_providers.dart';
 import 'print_job_history_provider.dart';
 
-/// Calculator state for the current print job being calculated
 class CalculatorState {
   final String? name;
   final String? description;
@@ -256,25 +249,26 @@ class CalculatorNotifier extends Notifier<CalculatorState> {
       final postProcessingSettings =
           await ref.read(postProcessingSettingsProvider.future);
 
-      // Calculate individual costs
+      // 1. Material Cost
       final filamentCost =
           state.filament!.calculateCost(state.filamentWeightGrams) *
               state.quantity;
 
+      // 2. Electricity Cost
       final electricityCost = state.printer!.calculateElectricityCost(
             state.printTimeHours,
             generalSettings.electricityRatePerKwh,
           ) *
           state.quantity;
 
+      // 3. Depreciation (Printer Cost)
       final printerCost = state.printer!.printerCostPerHour *
           state.printTimeHours *
           state.quantity;
 
-      final laborCost = generalSettings.laborRatePerHour *
-          state.printTimeHours *
-          state.quantity;
-
+      // 4. Labor Cost (Manual Work: Pre & Post Processing)
+      // Note: We ignore general 'laborRatePerHour' * printTime as per user request
+      // and focus on manual labor minutes.
       final preProcessingCost = preProcessingSettings.calculateCost(
         modelingHours: state.modelingHours,
         slicingHours: state.slicingHours,
@@ -295,39 +289,40 @@ class CalculatorNotifier extends Notifier<CalculatorState> {
         needsAssembly: state.needsAssembly,
       );
 
-      // Calculate subtotal
-      final subtotal = filamentCost +
-          electricityCost +
-          printerCost +
-          laborCost +
-          preProcessingCost +
-          postProcessingCost;
+      final laborCost = preProcessingCost + postProcessingCost;
 
-      // Apply failure buffer
-      final failureBuffer =
-          subtotal * (generalSettings.failureRatePercent / 100);
+      // 5. Misc (Packaging + Shipping Base)
+      // We explicitly include these in the base cost before markups as requested
+      final miscCost = generalSettings.packagingCostPerItem +
+          generalSettings.shippingBasePrice;
 
-      // Calculate with failure buffer
-      final subtotalWithFailure = subtotal + failureBuffer;
+      // Base Total
+      final baseTotal =
+          filamentCost + electricityCost + printerCost + laborCost + miscCost;
 
-      // Apply markup
-      final markup =
-          subtotalWithFailure * (generalSettings.markupPercent / 100);
+      // 6. Failure Buffer (1.10 = 10%)
+      // Using generalSettings.failureRatePercent (e.g., 10)
+      final failureMultiplier = 1 + (generalSettings.failureRatePercent / 100);
+      final totalWithFailure = baseTotal * failureMultiplier;
 
-      // Calculate total before tax
-      final totalBeforeTax =
-          subtotalWithFailure + markup + generalSettings.packagingCostPerItem;
+      // 7. Profit / Markup (1.50 = 50% markup)
+      // Use settings markup
+      final markupPct = generalSettings.markupPercent;
+      final markupMultiplier = 1 + (markupPct / 100);
 
-      // Apply tax if enabled
+      final totalWithMarkup = totalWithFailure * markupMultiplier;
+
+      // 8. Tax (if enabled) - applied on top of the calculated price
       final tax = generalSettings.includeTax
-          ? totalBeforeTax * (generalSettings.taxPercent / 100)
+          ? totalWithMarkup * (generalSettings.taxPercent / 100)
           : 0.0;
 
-      final totalCost =
-          totalBeforeTax + tax + generalSettings.shippingBasePrice;
-
-      // Suggested price (total cost is the suggested price with markup)
+      final totalCost = totalWithMarkup + tax;
       final suggestedPrice = totalCost;
+
+      // Calculate specific values for the entity
+      final failureBufferAmount = totalWithFailure - baseTotal;
+      final markupAmount = totalWithMarkup - totalWithFailure;
 
       final printJob = PrintJobEntity(
         id: const Uuid().v4(),
@@ -343,12 +338,12 @@ class CalculatorNotifier extends Notifier<CalculatorState> {
         filamentCost: filamentCost,
         electricityCost: electricityCost,
         printerCost: printerCost,
-        laborCost: laborCost,
+        laborCost: laborCost, // Storing total manual labor cost here
         preProcessingCost: preProcessingCost,
         postProcessingCost: postProcessingCost,
-        subtotal: subtotal,
-        failureBuffer: failureBuffer,
-        markup: markup,
+        subtotal: baseTotal,
+        failureBuffer: failureBufferAmount,
+        markup: markupAmount,
         tax: tax,
         packagingCost: generalSettings.packagingCostPerItem,
         shippingCost: generalSettings.shippingBasePrice,

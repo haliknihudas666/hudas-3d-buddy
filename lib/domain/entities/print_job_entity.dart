@@ -94,10 +94,17 @@ class PrintJobEntity extends Equatable {
     this.updatedAt,
   });
 
-  /// Profit margin percentage
+  /// Profit margin percentage (Margin = Profit / Revenue)
   double get profitMargin {
-    if (totalCost <= 0 || suggestedPrice <= 0) return 0;
-    return ((suggestedPrice - totalCost) / suggestedPrice) * 100;
+    if (totalCost <= 0) return 0;
+    return (markup / totalCost) * 100;
+  }
+
+  /// Markup percentage (Markup = Profit / Cost)
+  double get markupPercentage {
+    final costBasis = subtotal + failureBuffer;
+    if (costBasis <= 0) return 0;
+    return (markup / costBasis) * 100;
   }
 
   /// Cost per unit

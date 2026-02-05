@@ -6,14 +6,43 @@ import '../../../providers/calculator_provider.dart';
 import '../../../widgets/widgets.dart';
 
 /// Card for print parameters input
-class PrintParamsCard extends ConsumerWidget {
+class PrintParamsCard extends ConsumerStatefulWidget {
   const PrintParamsCard({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PrintParamsCard> createState() => _PrintParamsCardState();
+}
+
+class _PrintParamsCardState extends ConsumerState<PrintParamsCard> {
+  late TextEditingController _nameController;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final state = ref.watch(calculatorProvider);
     final notifier = ref.read(calculatorProvider.notifier);
+
+    // Sync controller with state (handles reset/load)
+    final stateName = state.name ?? '';
+    if (_nameController.text != stateName) {
+      _nameController.value = _nameController.value.copyWith(
+        text: stateName,
+        selection: TextSelection.collapsed(offset: stateName.length),
+        composing: TextRange.empty,
+      );
+    }
 
     return SingleChildScrollView(
       child: GlassCard(
@@ -44,6 +73,18 @@ class PrintParamsCard extends ConsumerWidget {
               ],
             ),
             const SizedBox(height: 20),
+
+            // Print Name
+            ModernTextField(
+              label: 'Print Name (Optional)',
+              hint: 'e.g. Iron Man Helmet',
+              controller: _nameController,
+              prefixIcon: const Icon(Icons.description_rounded),
+              onChanged: (value) {
+                notifier.updatePrintParams(name: value);
+              },
+            ),
+            const SizedBox(height: 16),
 
             // Print Time
             NumberInputField(
@@ -87,94 +128,6 @@ class PrintParamsCard extends ConsumerWidget {
               onChanged: (value) {
                 notifier.updatePrintParams(quantity: value.toInt());
               },
-            ),
-            const SizedBox(height: 16),
-
-            // Infill Percentage
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Infill Percentage',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Text(
-                      '${state.infillPercent}%',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                SliderTheme(
-                  data: SliderTheme.of(context).copyWith(
-                    activeTrackColor: AppColors.primary,
-                    inactiveTrackColor: AppColors.primary.withOpacity(0.2),
-                    thumbColor: AppColors.primary,
-                    overlayColor: AppColors.primary.withOpacity(0.1),
-                  ),
-                  child: Slider(
-                    value: state.infillPercent.toDouble(),
-                    min: 0,
-                    max: 100,
-                    divisions: 20,
-                    onChanged: (value) {
-                      notifier.updatePrintParams(infillPercent: value.toInt());
-                    },
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-
-            // Layer Height
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Layer Height',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Text(
-                      '${state.layerHeight.toStringAsFixed(2)} mm',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                SliderTheme(
-                  data: SliderTheme.of(context).copyWith(
-                    activeTrackColor: AppColors.secondary,
-                    inactiveTrackColor: AppColors.secondary.withOpacity(0.2),
-                    thumbColor: AppColors.secondary,
-                    overlayColor: AppColors.secondary.withOpacity(0.1),
-                  ),
-                  child: Slider(
-                    value: state.layerHeight,
-                    min: 0.05,
-                    max: 0.5,
-                    divisions: 18,
-                    onChanged: (value) {
-                      notifier.updatePrintParams(layerHeight: value);
-                    },
-                  ),
-                ),
-              ],
             ),
           ],
         ),
