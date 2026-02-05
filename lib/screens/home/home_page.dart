@@ -8,10 +8,10 @@ import '../../providers/providers.dart';
 import '../../widgets/widgets.dart';
 
 class HomePage extends ConsumerStatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
@@ -20,7 +20,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     final printersProvider = ref.watch(printerProvider);
     final filamentsProvider = ref.watch(filamentProvider);
-    final calcuProvider = ref.watch(calculatorProvider);
+
     return Scaffold(
       drawer: const Sidebar(),
       appBar: AppBar(

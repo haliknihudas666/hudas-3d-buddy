@@ -9,10 +9,11 @@ import 'package:hudas_3d_buddy/providers/filament_provider.dart';
 import '../../widgets/widgets.dart';
 
 class FilamentManagementPage extends ConsumerStatefulWidget {
-  const FilamentManagementPage({Key? key}) : super(key: key);
+  const FilamentManagementPage({super.key});
 
   @override
-  _FilamentManagementPageState createState() => _FilamentManagementPageState();
+  ConsumerState<FilamentManagementPage> createState() =>
+      _FilamentManagementPageState();
 }
 
 class _FilamentManagementPageState

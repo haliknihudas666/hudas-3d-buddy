@@ -65,7 +65,7 @@ class Sidebar extends StatelessWidget {
   }
 
   void goToPage(BuildContext context, String path) {
-    final String location = GoRouterState.of(context).location;
+    final String location = GoRouterState.of(context).uri.toString();
 
     if (location == path) {
       context.pop();

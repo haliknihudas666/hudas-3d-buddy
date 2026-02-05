@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:hudas_3d_buddy/models/filament_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,13 +11,12 @@ final filamentProvider = ChangeNotifierProvider<FilamentProvider>((ref) {
 });
 
 class FilamentProvider extends ChangeNotifier {
-  final Ref? _ref;
-  FilamentProvider(this._ref) {
+  FilamentProvider(Ref ref) {
     getFilaments();
   }
 
   FilamentModel? _selectedFilament;
-  get selectedFilament => _selectedFilament;
+  FilamentModel? get selectedFilament => _selectedFilament;
 
   void setSelectedFilament(FilamentModel? filament) {
     _selectedFilament = filament;

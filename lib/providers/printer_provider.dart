@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:hudas_3d_buddy/models/printer_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,8 +11,7 @@ final printerProvider = ChangeNotifierProvider<PrinterProvider>((ref) {
 });
 
 class PrinterProvider extends ChangeNotifier {
-  final Ref _ref;
-  PrinterProvider(this._ref) {
+  PrinterProvider(Ref ref) {
     getPrinters();
   }
 
@@ -33,19 +33,19 @@ class PrinterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  setEditPrinter(int index) {
+  void setEditPrinter(int index) {
     inputPrinter = _printers[index];
 
     notifyListeners();
   }
 
-  clearEditPrinter() {
+  void clearEditPrinter() {
     inputPrinter = PrinterModel();
 
     notifyListeners();
   }
 
-  editPrinter(int index) {
+  void editPrinter(int index) {
     //done this to remove refencing of inputFilament model because if not it will change all the data in the list
     var data = inputPrinter.toJson();
     _printers[index] = PrinterModel.fromJson(data);
@@ -56,13 +56,13 @@ class PrinterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  removePrinter(int index) {
+  void removePrinter(int index) {
     _printers.removeAt(index);
     writeToDevice();
     notifyListeners();
   }
 
-  writeToDevice() async {
+  Future<void> writeToDevice() async {
     var prefs = await SharedPreferences.getInstance();
 
     if (_printers.isEmpty) {

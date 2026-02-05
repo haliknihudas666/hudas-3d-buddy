@@ -9,10 +9,11 @@ import 'package:hudas_3d_buddy/providers/printer_provider.dart';
 import '../../widgets/widgets.dart';
 
 class PrinterManagementPage extends ConsumerStatefulWidget {
-  const PrinterManagementPage({Key? key}) : super(key: key);
+  const PrinterManagementPage({super.key});
 
   @override
-  _PrinterManagementPageState createState() => _PrinterManagementPageState();
+  ConsumerState<PrinterManagementPage> createState() =>
+      _PrinterManagementPageState();
 }
 
 class _PrinterManagementPageState extends ConsumerState<PrinterManagementPage> {

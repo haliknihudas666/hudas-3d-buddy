@@ -75,7 +75,7 @@ class CustomRouter {
 }
 
 class _ErrorPage extends StatelessWidget {
-  const _ErrorPage(this.error, {Key? key}) : super(key: key);
+  const _ErrorPage(this.error);
   final Exception? error;
 
   @override
