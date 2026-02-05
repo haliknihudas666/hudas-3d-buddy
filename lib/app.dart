@@ -1,32 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'router/router.dart';
+import 'core/theme/app_theme.dart';
+import 'presentation/providers/settings_provider.dart';
+import 'presentation/router/app_router.dart';
 
-class MyApp extends ConsumerStatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+/// Main application widget
+class Hudas3DBuddyApp extends ConsumerWidget {
+  const Hudas3DBuddyApp({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _MyAppState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(appRouterProvider);
+    final isDarkMode = ref.watch(isDarkModeProvider);
 
-class _MyAppState extends ConsumerState<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    final router = ref.watch(appRouter);
-
-    return FlavorBanner(
-      location: BannerLocation.bottomStart,
-      child: MaterialApp.router(
-        title: 'Hudas 3D Buddy',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        routeInformationParser: router.routeInformationParser,
-        routerDelegate: router.routerDelegate,
-        routeInformationProvider: router.routeInformationProvider,
-      ),
+    return MaterialApp.router(
+      title: 'Hudas 3D Buddy',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      routerConfig: router,
     );
   }
 }
