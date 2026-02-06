@@ -1,4 +1,4 @@
-package com.example.hudas_3d_buddy
+package games.nicolei.hudas_3d_buddy
 
 import io.flutter.embedding.android.FlutterActivity
 
