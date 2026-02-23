@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/theme/app_theme.dart';
 import 'presentation/providers/settings_provider.dart';
 import 'presentation/router/app_router.dart';
+import 'presentation/widgets/banner_ad_widget.dart';
 
 /// Main application widget
 class Hudas3DBuddyApp extends ConsumerWidget {
@@ -21,6 +22,19 @@ class Hudas3DBuddyApp extends ConsumerWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
       routerConfig: router,
+      builder: (context, child) {
+        return Column(
+          children: [
+            Expanded(child: child!),
+            SafeArea(
+              top: false,
+              child: Material(
+                child: BannerAdWidget(),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

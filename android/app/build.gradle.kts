@@ -47,8 +47,12 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            manifestPlaceholders["admobAppId"] = "ca-app-pub-3940256099942544~3347511713"
+        }
         release {
             signingConfig = signingConfigs.getByName("release")
+            manifestPlaceholders["admobAppId"] = "ca-app-pub-3458428662847217~4263259460"
         }
     }
 }
