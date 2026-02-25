@@ -123,11 +123,17 @@ final postProcessingSettingsProvider =
 
 /// Notifier for theme mode
 class IsDarkModeNotifier extends Notifier<bool> {
+  static const _key = 'isDarkMode';
+
   @override
-  bool build() => true;
+  bool build() {
+    final prefs = ref.watch(sharedPreferencesProvider);
+    return prefs.getBool(_key) ?? true;
+  }
 
   void toggle() {
     state = !state;
+    ref.read(sharedPreferencesProvider).setBool(_key, state);
   }
 }
 
