@@ -1,3 +1,42 @@
 {
-  "dart.flutterSdkPath": ".fvm/versions/stable"
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "editor.formatOnPaste": true,
+  "[dart]": {
+    "editor.defaultFormatter": "Dart-Code.dart-code",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "always",
+    "source.addMissingImports": "always",
+    "source.fixAll": "always"
+  },
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "dart.previewFlutterUiGuides": true,
+  "dart.closingLabels": true,
+  "dart.showTodos": true,
+  "dart.enableSdkFormatter": true,
+  "dart.showInspectorNotificationsForWidgetErrors": true,
+  "dart.hotReloadOnSave": "all",
+  "dart.flutterSdkPath": ".fvm/versions/3.41.7",
+  "dart.lineLength": 100,
+  "editor.wordWrap": "on",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  "editor.guides.indentation": true,
+  "editor.inlineSuggest.enabled": true,
+  "editor.stickyScroll.enabled": true,
+  "workbench.editor.highlightModifiedTabs": true,
+  "[json]": {
+    "editor.formatOnSave": true
+  },
+  "[yaml]": {
+    "editor.formatOnSave": true
+  },
+  "window.commandCenter": true,
+  "files.autoSave": "afterDelay"
 }

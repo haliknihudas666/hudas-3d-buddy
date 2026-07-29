@@ -26,7 +26,7 @@ class Hudas3DBuddyApp extends ConsumerWidget {
         return Column(
           children: [
             Expanded(child: child!),
-            SafeArea(
+            const SafeArea(
               top: false,
               child: Material(
                 child: BannerAdWidget(),
